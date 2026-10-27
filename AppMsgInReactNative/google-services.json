@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "571264660636",
+    "project_id": "msgappinreactnative",
+    "storage_bucket": "msgappinreactnative.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571264660636:android:8f093061681ee18200e959",
+        "android_client_info": {
+          "package_name": "com.anonymous.AppMsgInReactNative"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzjkBOduZ8EHr52Z_LlkrPVvNhb_B5QjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
