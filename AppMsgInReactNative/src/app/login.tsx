@@ -9,14 +9,59 @@ import { TextInput } from '@/components/text-input';
 import { Button } from '@/components/button';
 import { Checkbox } from '@/components/checkbox';
 
-export default function LoginScreen() {
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+// Firebase imports
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/firebaseConfig';
 
-   const handleLogin = () => {
-    // Handle login logic here
-    console.log('Logging in with:', email, password);
-  }
+export default function LoginScreen() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async () => {
+        if (!email.trim() || !password) {
+            console.log('Remplis tous les champs');
+            return;
+        }
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email.trim(),
+            password
+            );
+
+            const user = userCredential.user;
+
+            console.log('Connexion réussie !');
+            console.log('UID :', user.uid);
+            console.log('Email :', user.email);
+
+            // La navigation vers l'écran principal peut se faire ici.
+            // router.replace('/contacts');
+
+        } catch (error: any) {
+            console.log('Erreur Firebase :', error.code);
+
+            switch (error.code) {
+            case 'auth/invalid-credential':
+            case 'auth/wrong-password':
+            case 'auth/user-not-found':
+                console.log('E-mail ou mot de passe incorrect');
+                break;
+
+            case 'auth/invalid-email':
+                console.log('Adresse e-mail invalide');
+                break;
+
+            case 'auth/too-many-requests':
+                console.log('Trop de tentatives. Réessaie plus tard.');
+                break;
+
+            default:
+                console.log('Erreur de connexion :', error.message);
+            }
+        }
+    };
   return (
     <SafeAreaProvider style={styles.container}>
         <Image style={styles.logo} source={require('@/assets/logo.png')} />
