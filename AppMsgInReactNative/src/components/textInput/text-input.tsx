@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
-import { View, StyleSheet, TextInput as ReactTextInput } from 'react-native';
-
-import { Spacing } from '@/constants/theme';
+import { StyleSheet, TextInput as ReactTextInput } from 'react-native';
 
 type TextInputProps = {
   title?: string;
@@ -23,15 +21,15 @@ export function TextInput( { placeholder = '', hide = false }: TextInputProps) {
 const styles = StyleSheet.create({
   textInput: {
     width: '100%',
-    height: 70,
-    borderRadius: 40,
+    height: 80,
+    borderRadius: 50,
     backgroundColor: '#FFF',
     borderWidth: 1,
     borderColor: '#DCDCDC',
     paddingHorizontal: 24,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '400',
-    color: '#6B6B6B',
+    color: '#000',
     textAlign: 'center',
   },
 });
