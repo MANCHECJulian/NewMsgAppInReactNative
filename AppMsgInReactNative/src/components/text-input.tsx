@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { StyleSheet, TextInput as ReactTextInput } from 'react-native';
 
 type TextInputProps = {
@@ -6,14 +6,24 @@ type TextInputProps = {
   hint?: ReactNode;
   placeholder?: string;
   hide?: boolean;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  validate?: (text: string) => string | null;
 };
 
-export function TextInput( { placeholder = '', hide = false }: TextInputProps) {
+export function TextInput({
+  placeholder,
+  hide = false,
+  value,
+  onChangeText,
+}: TextInputProps) {
   return (
     <ReactTextInput
-      style={styles.textInput}
       placeholder={placeholder}
       secureTextEntry={hide}
+      value={value}
+      onChangeText={onChangeText}
+      style={styles.textInput}
     />
   );
 }
@@ -31,5 +41,8 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#000',
     textAlign: 'center',
+  },
+  error: {
+    borderColor: 'red',
   },
 });

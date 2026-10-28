@@ -2,33 +2,83 @@
 import { StyleSheet, Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useState } from 'react';
 
 import { TextInput } from '@/components/text-input';
 import { Button } from '@/components/button';
-import { Checkbox } from '@/components/checkbox';
+
+// Firebase imports
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/firebaseConfig';
 
 export default function RegisterScreen() {
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmationPassword, setConfirmationPassword] = useState('');
+
+    const handleRegister = async () => {
+        console.log('Registering with:', email, username, password, confirmationPassword);
+        if (!email.trim() || !password || !confirmationPassword) {
+            console.log('Veuillez remplir tous les champs');
+            return;
+        }
+
+        if (password !== confirmationPassword) {
+            console.log('Les mots de passe ne correspondent pas');
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email.trim(),
+            password
+            );
+
+            console.log('Compte créé !');
+            console.log('UID :', userCredential.user.uid);
+            console.log('Email :', userCredential.user.email);
+
+            // Rediriger vers l'écran suivant si nécessaire
+
+        } catch (error: any) {
+            console.log('Erreur Firebase :', error.code);
+            console.log('Détails :', error.message);
+        }
+    };
   return (
     <SafeAreaProvider style={styles.container}>
         <Image style={styles.logo} source={require('@/assets/logo.png')} />
       <SafeAreaView style={styles.formContainer}>
-        <TextInput placeholder="username" />
-        <TextInput placeholder="password" hide={true} />
-        <Button text="Sign in" />
+        <TextInput placeholder="your email" 
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput placeholder="new username" 
+          value={username}
+          onChangeText={setUsername}
+        />
+        <TextInput placeholder="new password" hide={true} 
+          value={password}
+          onChangeText={setPassword}
+        />
+        <TextInput placeholder="confirmation password" hide={true} 
+          value={confirmationPassword}
+          onChangeText={setConfirmationPassword}
+        />
+        <Button text="Create my account" onPress={handleRegister}/>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={{ color: '#999', fontWeight: '400', fontSize: 16, marginRight: 5 }}>
-                No account yet? registeeeeeeer
+                Already have an account ?
             </Text>
-            <Pressable onPress={() => router.replace('/register')}>
+            <Pressable onPress={() => router.replace('/login')}>
                 <Text style={{ color: '#5865F2', fontSize: 16, fontWeight: '400', borderBottomWidth: 1, borderBottomColor: '#5865F2', }}>
-                    Create an account
+                    Sign in
                 </Text>
             </Pressable>
         </View>
       </SafeAreaView>
-      <View style={styles.bottomContainer}>
-        <Checkbox text="Remember me" />
-      </View>
     </SafeAreaProvider>
   );
 }

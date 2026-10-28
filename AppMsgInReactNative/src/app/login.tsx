@@ -3,19 +3,33 @@ import { StyleSheet, Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { router } from 'expo-router';
+import { useState } from 'react';
 
 import { TextInput } from '@/components/text-input';
 import { Button } from '@/components/button';
 import { Checkbox } from '@/components/checkbox';
 
 export default function LoginScreen() {
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+
+   const handleLogin = () => {
+    // Handle login logic here
+    console.log('Logging in with:', email, password);
+  }
   return (
     <SafeAreaProvider style={styles.container}>
         <Image style={styles.logo} source={require('@/assets/logo.png')} />
       <SafeAreaView style={styles.formContainer}>
-        <TextInput placeholder="username" />
-        <TextInput placeholder="password" hide={true} />
-        <Button text="Sign in" />
+        <TextInput placeholder="email" 
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput placeholder="password" hide={true} 
+          value={password}
+          onChangeText={setPassword}
+        />
+        <Button text="Sign in" onPress={handleLogin} />
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={{ color: '#999', fontWeight: '400', fontSize: 16, marginRight: 5 }}>
                 No account yet?
