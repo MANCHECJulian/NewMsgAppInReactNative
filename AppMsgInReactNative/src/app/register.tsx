@@ -1,113 +1,176 @@
-// @ts-ignore React Native declarations require a newer moduleResolution setting.
-import { StyleSheet, Image, Pressable, Text, View } from 'react-native';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+
+import {
+  StyleSheet,
+  Image,
+  Pressable,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from 'react-native';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useState } from 'react';
 
 import { TextInput } from '@/components/text-input';
 import { Button } from '@/components/button';
 
-// Firebase imports
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebaseConfig';
 
 export default function RegisterScreen() {
-    const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmationPassword, setConfirmationPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmationPassword, setConfirmationPassword] = useState('');
 
-    const handleRegister = async () => {
-        console.log('Registering with:', email, username, password, confirmationPassword);
-        if (!email.trim() || !password || !confirmationPassword) {
-            console.log('Veuillez remplir tous les champs');
-            return;
-        }
+  const handleRegister = async () => {
+    if (!email.trim() || !username.trim() || !password || !confirmationPassword) {
+      console.log('Veuillez remplir tous les champs');
+      return;
+    }
 
-        if (password !== confirmationPassword) {
-            console.log('Les mots de passe ne correspondent pas');
-            return;
-        }
+    if (password !== confirmationPassword) {
+      console.log('Les mots de passe ne correspondent pas');
+      return;
+    }
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(
-            auth,
-            email.trim(),
-            password
-            );
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email.trim(),
+        password
+      );
 
-            console.log('Compte créé !');
-            console.log('UID :', userCredential.user.uid);
-            console.log('Email :', userCredential.user.email);
+      console.log('Compte créé !', userCredential.user.uid);
 
-            // Rediriger vers l'écran suivant si nécessaire
+      // Ajouter ici la sauvegarde du username si nécessaire.
+      // Puis rediriger vers l'écran suivant.
+    } catch (error: any) {
+      console.log('Erreur Firebase :', error.code, error.message);
+    }
+  };
 
-        } catch (error: any) {
-            console.log('Erreur Firebase :', error.code);
-            console.log('Détails :', error.message);
-        }
-    };
   return (
-    <SafeAreaProvider style={styles.container}>
-        <Image style={styles.logo} source={require('@/assets/logo.png')} />
-      <SafeAreaView style={styles.formContainer}>
-        <TextInput placeholder="your email" 
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput placeholder="new username" 
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput placeholder="new password" hide={true} 
-          value={password}
-          onChangeText={setPassword}
-        />
-        <TextInput placeholder="confirmation password" hide={true} 
-          value={confirmationPassword}
-          onChangeText={setConfirmationPassword}
-        />
-        <Button text="Create my account" onPress={handleRegister}/>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <Text style={{ color: '#999', fontWeight: '400', fontSize: 16, marginRight: 5 }}>
-                Already have an account ?
-            </Text>
-            <Pressable onPress={() => router.replace('/login')}>
-                <Text style={{ color: '#5865F2', fontSize: 16, fontWeight: '400', borderBottomWidth: 1, borderBottomColor: '#5865F2', }}>
-                    Sign in
+    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.formContainer}>
+            <Image
+              style={styles.logo}
+              source={require('@/assets/logo.png')}
+              resizeMode="contain"
+            />
+
+            <TextInput
+              placeholder="your email"
+              value={email}
+              onChangeText={setEmail}
+            />
+
+            <TextInput
+              placeholder="new username"
+              value={username}
+              onChangeText={setUsername}
+            />
+
+            <TextInput
+              placeholder="new password"
+              hide={true}
+              value={password}
+              onChangeText={setPassword}
+            />
+
+            <TextInput
+              placeholder="confirmation password"
+              hide={true}
+              value={confirmationPassword}
+              onChangeText={setConfirmationPassword}
+            />
+
+            <Button
+              text="Create my account"
+              onPress={handleRegister}
+            />
+
+            <View style={styles.loginContainer}>
+              <Text style={styles.loginText}>
+                Already have an account?
+              </Text>
+
+              <Pressable onPress={() => router.replace('/login')}>
+                <Text style={styles.loginLink}>
+                  Sign in
                 </Text>
-            </Pressable>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+              </Pressable>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 100,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    formContainer: {
-        flex: 1,
-        width: '90%',
-        margin: 'auto',
-        gap: 20,
-    },
-    logo: {
-        width: 90,
-        height: 70,
-        justifyContent: 'center',
-        alignSelf: 'center',   
-    },
-    bottomContainer: {
-        width: '90%',
-        marginBottom: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        gap: 10,
-    },
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+
+  keyboardView: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+  },
+
+  formContainer: {
+    width: '100%',
+    maxWidth: 450,
+    alignSelf: 'center',
+    gap: 20,
+  },
+
+  logo: {
+    width: 90,
+    height: 70,
+    alignSelf: 'center',
+    marginBottom: 12,
+  },
+
+  loginContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 5,
+  },
+
+  loginText: {
+    color: '#999999',
+    fontWeight: '400',
+    fontSize: 16,
+  },
+
+  loginLink: {
+    color: '#5865F2',
+    fontSize: 16,
+    fontWeight: '400',
+    borderBottomWidth: 1,
+    borderBottomColor: '#5865F2',
+  },
 });

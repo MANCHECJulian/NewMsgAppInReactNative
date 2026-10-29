@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         width: '90%',
-        marginBottom: 50,
+        marginBottom: 100,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
