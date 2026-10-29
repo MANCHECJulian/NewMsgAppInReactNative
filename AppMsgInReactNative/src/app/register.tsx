@@ -18,7 +18,8 @@ import { TextInput } from '@/components/text-input';
 import { Button } from '@/components/button';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/firebaseConfig';
+import { auth, db } from '@/firebaseConfig';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -28,28 +29,33 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!email.trim() || !username.trim() || !password || !confirmationPassword) {
-      console.log('Veuillez remplir tous les champs');
-      return;
+        console.log('Veuillez remplir tous les champs');
+        return;
     }
 
     if (password !== confirmationPassword) {
-      console.log('Les mots de passe ne correspondent pas');
-      return;
+        console.log('Les mots de passe ne correspondent pas');
+        return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email.trim(),
-        password
-      );
+        const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email.trim(),
+            password
+        );
 
-      console.log('Compte créé !', userCredential.user.uid);
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+            username: username.trim(),
+            email: email.trim(),
+            createdAt: serverTimestamp(),
+        });
 
-      // Ajouter ici la sauvegarde du username si nécessaire.
-      // Puis rediriger vers l'écran suivant.
+        console.log('Compte créé !', userCredential.user.uid);
+
+        router.replace('/login');
     } catch (error: any) {
-      console.log('Erreur Firebase :', error.code, error.message);
+        console.log('Erreur Firebase :', error.code, error.message);
     }
   };
 

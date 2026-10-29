@@ -19,8 +19,9 @@ import { Button } from '@/components/button';
 import { Checkbox } from '@/components/checkbox';
 
 // Firebase imports
+import { doc, getDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/firebaseConfig';
+import { auth, db } from '@/firebaseConfig';
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
@@ -45,8 +46,7 @@ export default function LoginScreen() {
             console.log('UID :', user.uid);
             console.log('Email :', user.email);
 
-            // La navigation vers l'écran principal peut se faire ici.
-            // router.replace('/contacts');
+            router.replace('/home');
 
         } catch (error: any) {
             console.log('Erreur Firebase :', error.code);
