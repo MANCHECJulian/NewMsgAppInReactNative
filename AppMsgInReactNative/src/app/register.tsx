@@ -74,18 +74,21 @@ export default function RegisterScreen() {
 
             <TextInput
               placeholder="your email"
+              placeholderTextColor="#999"
               value={email}
               onChangeText={setEmail}
             />
 
             <TextInput
               placeholder="new username"
+              placeholderTextColor="#999"
               value={username}
               onChangeText={setUsername}
             />
 
             <TextInput
               placeholder="new password"
+              placeholderTextColor="#999"
               hide={true}
               value={password}
               onChangeText={setPassword}
@@ -93,6 +96,7 @@ export default function RegisterScreen() {
 
             <TextInput
               placeholder="confirmation password"
+              placeholderTextColor="#999"
               hide={true}
               value={confirmationPassword}
               onChangeText={setConfirmationPassword}
@@ -132,10 +136,11 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
-    flexGrow: 1,
+    flexGrow: 0,
     justifyContent: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingTop: 24,
+    paddingBottom: 30,
   },
 
   formContainer: {
@@ -143,11 +148,13 @@ const styles = StyleSheet.create({
     maxWidth: 450,
     alignSelf: 'center',
     gap: 20,
+    flex: 1,
+    justifyContent: 'center',
   },
 
   logo: {
-    width: 90,
-    height: 70,
+    width: 150,
+    height: 100,
     alignSelf: 'center',
     marginBottom: 12,
   },

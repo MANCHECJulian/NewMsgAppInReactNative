@@ -5,6 +5,7 @@ type TextInputProps = {
   title?: string;
   hint?: ReactNode;
   placeholder?: string;
+  placeholderTextColor?: string;
   hide?: boolean;
   value?: string;
   onChangeText?: (text: string) => void;
@@ -13,6 +14,7 @@ type TextInputProps = {
 
 export function TextInput({
   placeholder,
+  placeholderTextColor,
   hide = false,
   value,
   onChangeText,
@@ -20,6 +22,7 @@ export function TextInput({
   return (
     <ReactTextInput
       placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor}
       secureTextEntry={hide}
       value={value}
       onChangeText={onChangeText}

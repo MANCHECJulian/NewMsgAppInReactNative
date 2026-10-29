@@ -1,7 +1,16 @@
 // @ts-ignore React Native declarations require a newer moduleResolution setting.
-import { StyleSheet, Image, Pressable, Text, View } from 'react-native';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import {
+  StyleSheet,
+  Image,
+  Pressable,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from 'react-native';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useState } from 'react';
 
@@ -62,62 +71,123 @@ export default function LoginScreen() {
             }
         }
     };
-  return (
-    <SafeAreaProvider style={styles.container}>
-        <Image style={styles.logo} source={require('@/assets/logo.png')} />
-      <SafeAreaView style={styles.formContainer}>
-        <TextInput placeholder="email" 
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput placeholder="password" hide={true} 
-          value={password}
-          onChangeText={setPassword}
-        />
-        <Button text="Sign in" onPress={handleLogin} />
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <Text style={{ color: '#999', fontWeight: '400', fontSize: 16, marginRight: 5 }}>
-                No account yet?
-            </Text>
-            <Pressable onPress={() => router.replace('/register')}>
-                <Text style={{ color: '#5865F2', fontSize: 16, fontWeight: '400', borderBottomWidth: 1, borderBottomColor: '#5865F2', }}>
-                    Create an account
-                </Text>
-            </Pressable>
-        </View>
-      </SafeAreaView>
-      <View style={styles.bottomContainer}>
-        <Checkbox text="Remember me" />
-      </View>
-    </SafeAreaProvider>
-  );
+    return (
+        <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+            <KeyboardAvoidingView
+            style={styles.keyboardView}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            >
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.formContainer}>
+                <Image
+                    style={styles.logo}
+                    source={require('@/assets/logo.png')}
+                    resizeMode="contain"
+                />
+
+                <TextInput
+                    placeholder="email"
+                    placeholderTextColor="#999"
+                    value={email}
+                    onChangeText={setEmail}
+                />
+
+                <TextInput
+                    placeholder="password"
+                    placeholderTextColor="#999"
+                    hide={true}
+                    value={password}
+                    onChangeText={setPassword}
+                />
+
+                <Button text="Sign in" onPress={handleLogin} />
+
+                <View style={styles.loginContainer}>
+                    <Text style={styles.loginText}>
+                    No account yet?
+                    </Text>
+
+                    <Pressable onPress={() => router.replace('/register')}>
+                    <Text style={styles.loginLink}>
+                        Create an account
+                    </Text>
+                    </Pressable>
+                </View>
+
+                <View style={styles.bottomContainer}>
+                    <Checkbox text="Remember me" />
+                </View>
+                </View>
+            </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 100,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    formContainer: {
-        flex: 1,
-        width: '90%',
-        margin: 'auto',
-        gap: 20,
-    },
-    logo: {
-        width: 90,
-        height: 70,
-        justifyContent: 'center',
-        alignSelf: 'center',   
-    },
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+
+  keyboardView: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 30,
+  },
+
+  formContainer: {
+    width: '100%',
+    maxWidth: 450,
+    alignSelf: 'center',
+    gap: 20,
+    flex: 1,
+    justifyContent: 'center',
+  },
+
+  logo: {
+    width: 150,
+    height: 100,
+    alignSelf: 'center',
+    marginBottom: 12,
+  },
+
+  loginContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 5,
+  },
+
+  loginText: {
+    color: '#999999',
+    fontWeight: '400',
+    fontSize: 16,
+  },
+
+  loginLink: {
+    color: '#5865F2',
+    fontSize: 16,
+    fontWeight: '400',
+    borderBottomWidth: 1,
+    borderBottomColor: '#5865F2',
+  },
+
     bottomContainer: {
-        width: '90%',
-        marginBottom: 100,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row',
-        gap: 10,
+        marginTop: 'auto',
+        paddingBottom: 20,
     },
 });
