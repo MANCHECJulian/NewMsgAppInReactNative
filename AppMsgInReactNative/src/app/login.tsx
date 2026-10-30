@@ -28,6 +28,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
+        console.log('Tentative de connexion avec :', email, password);
         if (!email.trim() || !password) {
             console.log('Remplis tous les champs');
             return;
@@ -104,7 +105,7 @@ export default function LoginScreen() {
                     onChangeText={setPassword}
                 />
 
-                <Button text="Sign in" onPress={handleLogin} />
+                <Button text="Sign in" type="primary" onPress={handleLogin} />
 
                 <View style={styles.loginContainer}>
                     <Text style={styles.loginText}>
@@ -112,9 +113,9 @@ export default function LoginScreen() {
                     </Text>
 
                     <Pressable onPress={() => router.replace('/register')}>
-                    <Text style={styles.loginLink}>
-                        Create an account
-                    </Text>
+                        <Text style={styles.loginLink}>
+                            Create an account
+                        </Text>
                     </Pressable>
                 </View>
 

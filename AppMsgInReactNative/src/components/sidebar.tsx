@@ -113,19 +113,19 @@ export default function Sidebar({
 
           <Item
             icon={<Users size={22} color="#5865F2" />}
-            label="Ajouter un contact"
+            label="Add contacts"
             onPress={() => onNavigate('addUser')}
           />
 
           <Item
             icon={<UserRound size={22} color="#5865F2" />}
-            label="Mon profil"
+            label="My profil"
             onPress={() => onNavigate('profile')}
           />
 
           <Item
             icon={<Settings size={22} color="#5865F2" />}
-            label="Paramètres"
+            label="Settings"
             onPress={() => onNavigate('settings')}
           />
         </View>

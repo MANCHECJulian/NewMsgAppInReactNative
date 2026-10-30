@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import {
   View,
-  Text,
   Pressable,
   ActivityIndicator,
   StyleSheet,
@@ -73,19 +72,15 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* En-tête permanent */}
-        <View style={styles.header}>
-            <Pressable
-                onPress={() => setSidebarVisible(true)}
-                style={styles.menuButton}
-                hitSlop={10}
-            >
-                <Menu size={30} color="#5865F2" />
-            </Pressable>
-
-            <Text style={styles.headerTitle}>
-                Bonjour {username || 'utilisateur'}
-            </Text>
-        </View>
+      <View style={styles.header}>
+          <Pressable
+              onPress={() => setSidebarVisible(true)}
+              style={styles.menuButton}
+              hitSlop={10}
+          >
+              <Menu size={30} color="#5865F2" />
+          </Pressable>
+      </View>
 
       {/* Seul ce contenu change */}
       <View style={styles.content}>
@@ -124,8 +119,6 @@ const styles = StyleSheet.create({
         gap: 16,
         paddingHorizontal: 16,
         paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EEEEEE',
     },
     menuButton: {
         width: 44,

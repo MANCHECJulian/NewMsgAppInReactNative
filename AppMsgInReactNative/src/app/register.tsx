@@ -110,6 +110,7 @@ export default function RegisterScreen() {
 
             <Button
               text="Create my account"
+              type="primary"
               onPress={handleRegister}
             />
 
